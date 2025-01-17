@@ -20,6 +20,11 @@ This project aims to predict house rents in Istanbul using various machine learn
 - NumPy
 - Matplotlib
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+
 ## Installation
 To clone and run this project locally, follow these steps:
 
@@ -28,6 +33,4 @@ git clone https://github.com/yagizterzi/IstanbulRentPrediction.git
 cd IstanbulRentPrediction
 pip install -r requirements.txt
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
