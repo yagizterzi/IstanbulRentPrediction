@@ -7,9 +7,9 @@ import matplotlib.pyplot as plt
 
 # 1. Verileri Yükleme
 files = [
-    r'C:\Users\yagiz\OneDrive\Masaüstü\Uygulamalar\kodlar\ist_rent\dataset\5_9_2022_sahibinden_ev.csv',
-    r'C:\Users\yagiz\OneDrive\Masaüstü\Uygulamalar\kodlar\ist_rent\dataset\22_5_2022_sahibinden_ev.csv',
-    r'C:\Users\yagiz\OneDrive\Masaüstü\Uygulamalar\kodlar\ist_rent\dataset\26_5_2022_sahibinden_ev.csv'
+    r'C:\ist_rent\dataset\5_9_2022_sahibinden_ev.csv',
+    r'C:\ist_rent\dataset\22_5_2022_sahibinden_ev.csv',
+    r'C:\ist_rent\dataset\26_5_2022_sahibinden_ev.csv'
 ]
 
 dataframes = []
@@ -24,11 +24,10 @@ for file in files:
     dataframes.append(df)
 
 data = pd.concat(dataframes, ignore_index=True)
-print("Veri yüklendi ve birleştirildi.")
+
 
 # 2. Veri Temizleme
 data = data.dropna()  # Eksik verileri temizle
-print("Eksik veriler temizlendi.")
 
 # Sayısal verilere dönüştürme (örneğin fiyatları veya metrekareleri düzenleme)
 data['price'] = pd.to_numeric(data['price'].replace('[^0-9]', '', regex=True), errors='coerce')
@@ -37,7 +36,7 @@ data['rooms'] = pd.to_numeric(data['numberOfRooms'].replace('[^0-9]', '', regex=
 
 # Geçersiz verileri temizleme
 data = data.dropna()
-print("Geçersiz veriler temizlendi.")
+
 
 # Tarih bileşenlerini ayırma
 data['year'] = data['date'].dt.year
@@ -48,21 +47,21 @@ y = data['price']  # Hedef değişken
 
 # Konum ve tarih gibi kategorik değişkenleri kodlama
 X = pd.get_dummies(X, columns=['town'], drop_first=True)
-print("Kategorik değişkenler kodlandı.")
+
 
 # 4. Veriyi Eğitim ve Test Setine Bölme
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-print("Veri eğitim ve test setlerine bölündü.")
+
 
 # 5. Model Eğitimi
 model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
-print("Model eğitildi.")
+
 
 # 6. Modeli Değerlendirme
 predictions = model.predict(X_test)
 mse = mean_squared_error(y_test, predictions)
-print(f'Model Mean Squared Error: {mse}')
+
 
 # 7. 2022-2025 Arası Tahminler İçin Veri Hazırlama
 future_years = pd.date_range(start='2022', end='2025', freq='Y').year
@@ -80,11 +79,11 @@ for col in X.columns:
 
 # Sütunları sıralama
 future_data = future_data[X.columns]
-print("Gelecek yıllar için veri hazırlandı.")
+
 
 # Tahmin
 future_predictions = model.predict(future_data)
-print("Gelecek yıllar için tahminler yapıldı.")
+
 
 # 8. Tahminleri Grafiğe Dökmek
 plt.figure(figsize=(10, 6))
@@ -95,4 +94,3 @@ plt.title('Predicted Rent Prices from 2022 to 2025')
 plt.legend()
 plt.grid(True)
 plt.show()
-print("Tahminler grafiğe döküldü.")
